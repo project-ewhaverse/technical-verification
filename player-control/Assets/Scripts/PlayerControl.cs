@@ -6,10 +6,14 @@ public class PlayerControl : MonoBehaviour
 {
     //private Rigidbody rigid;
     [HideInInspector] public CharacterController controller;
+    
     [Header("Player")]
-    [SerializeField] private float speed = 5f;
+    [SerializeField] private Transform player;
+    [SerializeField] private float speed = 4f;
+    [SerializeField] private float rotationSpeed = 5f;
 
     [Header("Camera")]
+    [SerializeField] private Transform camera;
     [SerializeField] private Transform cameraArm;
     [SerializeField] private float camSens = 2f;
 
@@ -35,8 +39,8 @@ public class PlayerControl : MonoBehaviour
     void Update()
     {
         Jump();
-        Translate();
-        Rotate(); 
+        CameraLookAt();
+        Translate();        
     }
 
     void Translate()
@@ -52,7 +56,10 @@ public class PlayerControl : MonoBehaviour
                 Vector3 forward = new Vector3(cameraArm.forward.x, 0f, cameraArm.forward.z).normalized;
                 Vector3 right = new Vector3(cameraArm.right.x, 0f, cameraArm.right.z).normalized;
                 controller.Move(velocity * Time.deltaTime +  (forward * vAxis + right * hAxis) * 0.5f * speed * Time.deltaTime);
-			}
+                //player.LookAt(player.position + forward * vAxis + right * hAxis);
+                Quaternion LookAt = Quaternion.LookRotation(forward * vAxis + right * hAxis);
+                player.rotation = Quaternion.Slerp(player.rotation, LookAt, Time.deltaTime * rotationSpeed);
+            }
             isJumping = !controller.isGrounded;
         }
 
@@ -61,9 +68,10 @@ public class PlayerControl : MonoBehaviour
             if (hAxis != 0 || vAxis != 0)
             {
                 Vector3 forward = new Vector3(cameraArm.forward.x, 0f, cameraArm.forward.z).normalized;
-                Vector3 right = new Vector3(cameraArm.right.x, 0f, cameraArm.right.z).normalized;
+                Vector3 right = new Vector3(cameraArm.right.x, 0f, cameraArm.right.z).normalized;  
                 controller.Move((forward * vAxis + right * hAxis) * speed * Time.deltaTime);
-
+                Quaternion LookAt = Quaternion.LookRotation(forward * vAxis + right * hAxis);
+                player.rotation = Quaternion.Slerp(player.rotation, LookAt, Time.deltaTime * rotationSpeed);
             }
             if (!controller.isGrounded)
             {
@@ -71,11 +79,11 @@ public class PlayerControl : MonoBehaviour
                 velocity = controller.velocity * jumpForwardAppliedForce;
                 velocity.y = 0f;
             }
-        }
 
+        }
     }
 
-    void Rotate()
+    void CameraLookAt()
 	{
 		if (Input.GetMouseButton(0)) {
             Vector2 mouseDelta = new Vector2(camSens * Input.GetAxis("Mouse X"), camSens * Input.GetAxis("Mouse Y"));
