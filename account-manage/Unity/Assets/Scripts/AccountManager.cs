@@ -24,5 +24,17 @@ public class AccountManager : MonoBehaviour
         yield return www.SendWebRequest();
         print(www.downloadHandler.text);
     }
-    // Start is called before the first frame update
+    public Text logText;
+    void OnEnable()
+    {
+        Application.logMessageReceived += LogCallback;
+    }
+    void OnDisable()
+    {
+        Application.logMessageReceived -= LogCallback;
+    }
+    void LogCallback(string logString, string stackTrace, LogType type)
+    {
+        logText.text = logString;
+    }
 }
