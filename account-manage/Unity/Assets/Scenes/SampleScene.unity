@@ -1674,6 +1674,7 @@ MonoBehaviour:
   passwordInput: {fileID: 1562276756}
   infoInput: {fileID: 2012261907}
   url: [입력]
+  logText: {fileID: 1206097827}
 --- !u!1 &1547653181
 GameObject:
   m_ObjectHideFlags: 0
