@@ -5,7 +5,9 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
     [HideInInspector] public CharacterController controller;
-
+    Animator animator;
+    int isWalkingHash;
+    
     [Header("Player")]
     [SerializeField] private Transform player;
     [SerializeField] private float speed = 4f;
@@ -30,6 +32,8 @@ public class PlayerControl : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
+        isWalkingHash = Animator.StringToHash("isWalking");
     }
 
     // Update is called once per frame
@@ -46,6 +50,7 @@ public class PlayerControl : MonoBehaviour
         float hAxis = Input.GetAxis("Horizontal");
         float vAxis = Input.GetAxis("Vertical");
         Vector3 moveVec;
+        bool isWalking = animator.GetBool(isWalkingHash);
 
         if (isJumping)
         {
@@ -67,7 +72,12 @@ public class PlayerControl : MonoBehaviour
             }
 
 
-            if (controller.isGrounded) isJumping = false;
+            if (controller.isGrounded)
+            {
+                isJumping = false;
+                animator.SetBool("isJumping", false);
+                animator.SetBool("isGrounded", true);
+            }
         }
 
         else
@@ -81,10 +91,19 @@ public class PlayerControl : MonoBehaviour
 
                 Quaternion LookAt = Quaternion.LookRotation(moveVec);
                 player.rotation = Quaternion.Slerp(player.rotation, LookAt, Time.deltaTime * rotationSpeed);
+
+                if (!isWalking) animator.SetBool("isWalking", true);
+
+			}
+			else
+			{
+                if (isWalking) animator.SetBool("isWalking", false);
             }
+
             if (!controller.isGrounded)
             {
                 isJumping = true;
+                animator.SetBool("isGrounded", false);
                 velocity = controller.velocity * jumpForwardAppliedForce;
                 velocity.y = 0f;
             }
@@ -109,6 +128,7 @@ public class PlayerControl : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space) && !isJumping)
         {
+            animator.SetBool("isJumping", true);
             isJumping = true;
             velocity = controller.velocity * jumpForwardAppliedForce;
             velocity.y = Mathf.Sqrt(2 * Gravity * jumpHeight);

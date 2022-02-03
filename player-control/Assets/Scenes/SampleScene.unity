@@ -575,6 +575,7 @@ GameObject:
   - component: {fileID: 1834761331}
   - component: {fileID: 1834761332}
   - component: {fileID: 1834761330}
+  - component: {fileID: 1834761333}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -640,6 +641,25 @@ MonoBehaviour:
   jumpForwardAppliedForce: 0.5
   airControl: 0.5
   stepDown: 0.2
+--- !u!95 &1834761333
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1834761329}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: d3f1464efb4a5cc4593a4b26a61c5854, type: 3}
+  m_Controller: {fileID: 9100000, guid: 4e475f69c0d78904d8d919f791b50ca0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2003643621
 GameObject:
   m_ObjectHideFlags: 0
