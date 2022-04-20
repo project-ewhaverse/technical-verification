@@ -8,7 +8,7 @@ using System;
 public class VideoController : MonoBehaviour
 {
     VideoPlayer videoPlayer;
-    static string time = "20:10";
+    static string time = "10:20";
     static double runningTime = 10;
 
     DateTime comp = Convert.ToDateTime(time);
@@ -40,7 +40,6 @@ public class VideoController : MonoBehaviour
                 videoPlayer.Play();
                 Invoke("sync", delay);
                 sync();
-                print(runningTime);
                 on = true;
             }
         }
@@ -49,5 +48,6 @@ public class VideoController : MonoBehaviour
     void sync()
     {
         videoPlayer.frame = Convert.ToInt64((diffsec + delay) * videoPlayer.frameRate);
+        print(diffsec);
     }
 }
