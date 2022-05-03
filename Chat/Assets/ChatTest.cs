@@ -18,6 +18,8 @@ public class ChatTest : MonoBehaviour, IChatClientListener
 
 	public InputField inputField;
 	public Text outputText;
+	public GameObject textbox;
+	public Text boxtext;
 
 	// Use this for initialization
 	void Start()
@@ -128,11 +130,22 @@ public class ChatTest : MonoBehaviour, IChatClientListener
 		if (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter))
 		{
 			this.SendChatMessage(this.inputField.text);
+			boxtext.text = this.inputField.text;
 			this.inputField.text = "";
+
+			textbox.SetActive(true);
+			CancelInvoke();
+			Invoke("disappear", 4.0f);
+
 			this.inputField.Select();
 
 			this.inputField.ActivateInputField();
+
 		}
+	}
+	public void disappear()
+	{
+		textbox.SetActive(false);
 	}
 
 	private void SendChatMessage(string inputLine)
